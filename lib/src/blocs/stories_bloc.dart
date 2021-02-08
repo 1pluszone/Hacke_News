@@ -15,6 +15,15 @@ class StoriesBloc {
     _topIds.sink.add(ids);
   }
 
+  _itemsTransformer() {
+    return ScanStreamTransformer(
+      (cache, int id, _) {
+        // will be invovoked everytime a new item is added to our stream
+      },
+      <int, Future<ItemModel>>{}, //initial value.. we need it empty
+    );
+  }
+
   dispose() {
     _topIds.close();
   }
