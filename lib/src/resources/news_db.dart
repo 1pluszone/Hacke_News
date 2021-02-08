@@ -4,12 +4,17 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'dart:async';
 import '../models/item_model.dart';
+import 'repository.dart';
 
 final String tableName = "Items";
 final String columnId = "id";
 
-class NewsDb {
+class NewsDb implements Source, Cache {
   Database db;
+
+  NewsDb() {
+    init();
+  }
 
   void init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -38,6 +43,7 @@ class NewsDb {
     });
   }
 
+  @override
   Future<ItemModel> fetchItem(int id) async {
     final List<Map> maps = await db.query(tableName,
         columns:
@@ -52,7 +58,15 @@ class NewsDb {
     return null;
   }
 
+  @override //todo: store and fetch top ids
+  Future<List<int>> fetchTopIds() {
+    return null;
+  }
+
+  @override
   Future<int> addItem(ItemModel item) {
     return db.insert(tableName, item.toDbMap());
   }
 }
+
+final newsDb = NewsDb();
