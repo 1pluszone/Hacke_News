@@ -65,7 +65,8 @@ class NewsDb implements Source, Cache {
 
   @override
   Future<int> addItem(ItemModel item) {
-    return db.insert(tableName, item.toDbMap());
+    return db.insert(tableName, item.toDbMap(),
+        conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 }
 
