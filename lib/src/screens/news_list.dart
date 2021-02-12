@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hacker_news/src/widgets/news_list_tile.dart';
+import 'package:hacker_news/src/widgets/refresh.dart';
 import '../blocs/stories_provider.dart';
 
 class NewsList extends StatelessWidget {
   Widget build(context) {
     final bloc = StoriesProvider.of(context);
+    bloc.fetchTopIds();
 
     return Scaffold(
       appBar: AppBar(
@@ -22,12 +24,14 @@ class NewsList extends StatelessWidget {
           if (!snapshot.hasData) {
             return Center(child: Text("wahala be like bicycle"));
           }
-          return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, int index) {
-                bloc.fetchItem(snapshot.data[index]);
-                return NewsListTile(itemId: snapshot.data[index]);
-              });
+          return Refresh(
+            child: ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, int index) {
+                  bloc.fetchItem(snapshot.data[index]);
+                  return NewsListTile(itemId: snapshot.data[index]);
+                }),
+          );
         });
   }
 }

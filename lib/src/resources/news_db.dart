@@ -8,6 +8,7 @@ import 'repository.dart';
 
 final String tableName = "Items";
 final String columnId = "id";
+final String score = "score";
 
 class NewsDb implements Source, Cache {
   Database db;
@@ -35,7 +36,7 @@ class NewsDb implements Source, Cache {
           dead INTEGER,
           deleted INTEGER,
           url TEXT,
-          scroe INTEGER,
+          $score INTEGER,
           title TEXT,
           descendants INTEGER          
         )
@@ -65,8 +66,15 @@ class NewsDb implements Source, Cache {
 
   @override
   Future<int> addItem(ItemModel item) {
-    return db.insert(tableName, item.toDbMap(),
-        conflictAlgorithm: ConflictAlgorithm.ignore);
+    return db.insert(
+      tableName,
+      item.toDbMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
+  Future<int> clearTable() {
+    return db.delete(tableName);
   }
 }
 

@@ -27,9 +27,14 @@ class StoriesBloc {
     _topIds.sink.add(ids);
   }
 
+  clearCache() {
+    return _repository.clearCache();
+  }
+
   _itemsTransformer() {
     return ScanStreamTransformer(
       (Map<int, Future<ItemModel>> cache, int id, _) {
+        print(_);
         // will be invovoked everytime a new item is added to our stream
         cache[id] = _repository.fetchItem(id);
         return cache;
