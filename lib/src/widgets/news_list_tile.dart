@@ -43,7 +43,7 @@ class NewsListTile extends StatelessWidget {
             ],
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/${item.id}');
+            Navigator.pushNamed(context, '/detail', arguments: item.id);
           },
         ),
         Divider(
